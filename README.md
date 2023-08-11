@@ -1,337 +1,46 @@
-# Tangro Tankbeleg Verwaltung
+# Getting Started with Create React App
 
-## Die Aufgabe
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Wir haben eine Demo API zur Verfügung gestellt, mit der es möglich ist Tankbelege zu verwalten. Es gibt eine Liste von Autos und eine Liste von Tankbelegen, die einem Auto zugeordnet sind. Neue Tankbelege können für ein Auto erstellt werden. Bitte erstelle einen Fork von diesem Repository und baue eine kleine Anwendung.
+## Available Scripts
 
-### Features
+In the project directory, you can run:
 
-- Die Anwendung soll eine ReactJs Anwendung sein
-- Eine Liste der Tankbelege
-- Diese Liste soll nach Fahrzeugen filterbar sein
-- Ein Formular mit dem man für ein bestimmtes Auto einen Tankbeleg erstellen kann
+### `npm start`
 
-> Bitte verwende für die Anwendung, den Dir von uns gegebenen API Key
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-Bei der Wahl des Frameworks, der Libraries und der Art, wie Du die Aufgabe lösen möchtest, hast Du freie Wahl. Nutze am Besten die (ReactJs-) Technologien mit denen Du Dich am Besten auskennst.
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-# API
+### `npm test`
 
-## `GET https://tangro-demo-api.vercel.app/api/vehicles`
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-Retrieve a list of all the vehicles.
+### `npm run build`
 
-### Request Headers
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-| Name          | Value                 |
-| ------------- | --------------------- |
-| Authorization | `Bearer <YOUR_TOKEN>` |
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-### Response Body
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-Status Codes:
+### `npm run eject`
 
-- `401` - the Authorization Token is either missing or faulty.
-- `200` - An array of vehicles. A single vehicle has the following fields:
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-| Field          | Type   | Description                                         |
-| -------------- | ------ | --------------------------------------------------- |
-| `id`           | String | The vehicle id. A CUID                              |
-| `name`         | String | The name of the vehicle. E.g. _VW Passat_           |
-| `licensePlate` | String | The license plate of the vehicle. E.g. _HD-TA-1234_ |
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-### Example code
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-```typescript
-const response = await fetch(
-  "https://tangro-demo-api.vercel.app/api/vehicles",
-  {
-    headers: {
-      Authorization: "Bearer <YOUR_TOKEN>",
-    },
-  }
-);
-```
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
----
+## Learn More
 
-## `GET https://tangro-demo-api.vercel.app/api/receipts`
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-Retrieve all the receipts
-
-### Request Headers
-
-| Name          | Value                 |
-| ------------- | --------------------- |
-| Authorization | `Bearer <YOUR_TOKEN>` |
-
-### Response Body
-
-Status Codes:
-
-- `401` - the Authorization Token is either missing or faulty.
-- `200` - An array of receipts. A single receipt has the following fields:
-
-| Field           | Type            | Description                                                       | Example                                                    |
-| --------------- | --------------- | ----------------------------------------------------------------- | ---------------------------------------------------------- |
-| `id`            | String          | The receipt id.                                                   | A CUID                                                     |
-| `vehicle`       | Vehicle         | The vehicle the receipt belongs to. See above for alle the fields | `{ id: '%%', name: 'VW Golf', licensePlate: 'B-XTA-4A5' }` |
-| `date`          | ISO Date String | The date of the fuel receipt.                                     | `'2023-05-06T00:00:00.000Z'`                               |
-| `odometer`      | Int             | The total number of driven kilometers.                            | `12405`                                                    |
-| `liters`        | Float           | The amount of fuel in liters.                                     | `40.3`                                                     |
-| `pricePerLiter` | Float           | The price per liter.                                              | `1.749`                                                    |
-| `currency`      | `'EUR'`         | The currency. In our example this will always return `'EUR'`      | `'EUR'`                                                    |
-| `valueAddedTax` | `19`            | The value added tax. In our example this will always return `19`. | `19`                                                       |
-
-The receipts are ordered by `date` in descending order.
-
-### Example code
-
-```typescript
-const response = await fetch(
-  "https://tangro-demo-api.vercel.app/api/receipts",
-  {
-    headers: {
-      Authorization: "Bearer <YOUR_TOKEN>",
-    },
-  }
-);
-```
-
----
-
-## `POST https://tangro-demo-api.vercel.app/api/receipts`
-
-Create a new fuel receipt.
-
-### Request Body
-
-| Field           | Type                 | Description                                                                | Example                      |
-| --------------- | -------------------- | -------------------------------------------------------------------------- | ---------------------------- |
-| `date`          | String               | ISO Date.                                                                  | `'2023-05-06T00:00:00.000Z'` |
-| `odometer`      | Int                  | The total km driven.                                                       | `25245`                      |
-| `liters`        | Float                | The amount of liters fueled up.                                            | `40.1`                       |
-| `pricePerLiter` | Float                | The price per liter.                                                       | `1.859`                      |
-| `vehicleId`     | String               | The id of the vehicle that has been refueled                               | The CUID of the vehicle      |
-| `valueAddedTax` | Int _(optional)_     | The value added tax. In our example this will always be `19`. _(optional)_ | `19`                         |
-| `currency`      | `'EUR'` _(optional)_ | In this example this will always be `'EUR'`                                | `'EUR'`                      |
-
-### Response Body
-
-Status Codes:
-
-- `401` - the Authorization Token is either missing or faulty.
-- `201` - The new receipt has been created.
-
-```typescript
-const response = await fetch(
-  "https://tangro-demo-api.vercel.app/api/receipts",
-  {
-    method: "POST",
-    body: JSON.stringify({
-      // the data
-    }),
-    headers: {
-      Authorization: "Bearer <YOUR_TOKEN>",
-    },
-  }
-);
-```
----
-
-## `GET https://tangro-demo-api.vercel.app/api/receipts/<RECEIPT_ID>`
-
-Retrieve a single receipt
-
-### Request Headers
-
-| Name          | Value                 |
-| ------------- | --------------------- |
-| Authorization | `Bearer <YOUR_TOKEN>` |
-
-### Response Body
-
-Status Codes:
-
-- `401` - the Authorization Token is either missing or faulty.
-- `404` - The receipt could not be found.
-- `200` - The receipt. A single receipt has the following fields:
-
-| Field           | Type            | Description                                                       | Example                                                    |
-| --------------- | --------------- | ----------------------------------------------------------------- | ---------------------------------------------------------- |
-| `id`            | String          | The receipt id.                                                   | A CUID                                                     |
-| `vehicle`       | Vehicle         | The vehicle the receipt belongs to. See above for alle the fields | `{ id: '%%', name: 'VW Golf', licensePlate: 'B-XTA-4A5' }` |
-| `date`          | ISO Date String | The date of the fuel receipt.                                     | `'2023-05-06T00:00:00.000Z'`                               |
-| `odometer`      | Int             | The total number of driven kilometers.                            | `12405`                                                    |
-| `liters`        | Float           | The amount of fuel in liters.                                     | `40.3`                                                     |
-| `pricePerLiter` | Float           | The price per liter.                                              | `1.749`                                                    |
-| `currency`      | `'EUR'`         | The currency. In our example this will always return `'EUR'`      | `'EUR'`                                                    |
-| `valueAddedTax` | `19`            | The value added tax. In our example this will always return `19`. | `19`                                                       |
-
-### Example code
-
-```typescript
-const response = await fetch(
-  "https://tangro-demo-api.vercel.app/api/receipts/<RECEIPT_ID>",
-  {
-    headers: {
-      Authorization: "Bearer <YOUR_TOKEN>",
-    },
-  }
-);
-```
----
-
-## `POST https://tangro-demo-api.vercel.app/api/receipts/<RECEIPT_ID>`
-
-Update the data of a single receipt.
-
-### Request Headers
-
-| Name          | Value                 |
-| ------------- | --------------------- |
-| Authorization | `Bearer <YOUR_TOKEN>` |
-
-### Request Body
-
-| Field           | Type                 | Description                                                                | Example                    |
-| --------------- | -------------------- | -------------------------------------------------------------------------- | -------------------------- |
-| `id`            | String               | The id of the receipt                                                      | A CUID                     |
-| `date`          | String               | ISO Date.                                                                  | `2023-05-06T00:00:00.000Z` |
-| `odometer`      | Int                  | The total km driven.                                                       | `25245`                    |
-| `liters`        | Float                | The amount of liters fueled up.                                            | `40.1`                     |
-| `pricePerLiter` | Float                | The price per liter.                                                       | `1.859`                    |
-| `vehicleId`     | String               | The id of the vehicle that has been refueled                               | The CUID of the vehicle    |
-| `valueAddedTax` | Int _(optional)_     | The value added tax. In our example this will always be `19`. _(optional)_ | `19`                       |
-| `currency`      | `'EUR'` _(optional)_ | In this example this will always be `'EUR'`                                | `'EUR'`                    |
-
-### Response Body
-
-Status Codes:
-
-- `401` - the Authorization Token is either missing or faulty.
-- `404` - The receipt with the given `receiptId` does not exist.
-- `200` - The receipt has been updated
-
-```typescript
-const response = await fetch(
-  "https://tangro-demo-api.vercel.app/api/receipts/<RECEIPT_ID>",
-  {
-    method: "POST",
-    body: JSON.stringify({
-      // the data
-    }),
-    headers: {
-      Authorization: "Bearer <YOUR_TOKEN>",
-    },
-  }
-);
-```
-
----
-
-## `DELETE https://tangro-demo-api.vercel.app/api/receipts/<RECEIPT_ID>`
-
-Delete a single receipt with the given id.
-
-### Request Headers
-
-| Name          | Value                 |
-| ------------- | --------------------- |
-| Authorization | `Bearer <YOUR_TOKEN>` |
-
-### Response Body
-
-Status Codes:
-
-- `401` - the Authorization Token is either missing or faulty.
-- `404` - There is no receipt for the given id.
-- `200` - The receipt has been deleted.
-
-### Example
-
-```typescript
-const response = await fetch(
-  "https://tangro-demo-api.vercel.app/api/receipts",
-  {
-    method: "DELETE",
-    headers: {
-      Authorization: "Bearer <YOUR_TOKEN>",
-    },
-  }
-);
-```
-
----
-
-## `GET https://tangro-demo-api.vercel.app/api/vehicles/[vehicleId]/receipts`
-
-Retrieve all the receipts for a single vehicle with the given ID.
-
-### Request Headers
-
-| Name          | Value                 |
-| ------------- | --------------------- |
-| Authorization | `Bearer <YOUR_TOKEN>` |
-
-### Response Body
-
-Status Codes:
-
-- `401` - the Authorization Token is either missing or faulty.
-- `404` - The vehicle with the given `vehicleId` does not exist.
-- `200` - An array of receipts. A single receipt has the following fields:
-
-| Field           | Type            | Description                                                        | Example                                                    |
-| --------------- | --------------- | ------------------------------------------------------------------ | ---------------------------------------------------------- |
-| `id`            | String          | The receipt id. A CUID                                             |
-| `vehicle`       | Vehicle         | The vehicle the receipt belongs to. See above for alle the fields. | `{ id: '%%', name: 'VW Golf', licensePlate: 'B-XTA-4A5' }` |
-| `date`          | ISO Date String | The date of the fuel receipt                                       | `'2023-05-06T00:00:00.000Z'`                               |
-| `odometer`      | Int             | The total number of driven kilometers.                             | `12405`                                                    |
-| `liters`        | Float           | The amount of fuel in liters.                                      | `40.3`                                                     |
-| `pricePerLiter` | Float           | The price per liter.                                               | `1.749`                                                    |
-| `currency`      | `'EUR'`         | The currency. In our example this will always return `'EUR'`       | `EUR'`                                                     |
-| `valueAddedTax` | `19`            | The value added tax. In our example this will always return `19`.  | `19`                                                       |
-
-The receipts are ordered by `date` in descending order.
-
-### Example code
-
-```typescript
-const response = await fetch(
-  "https://tangro-demo-api.vercel.app/api/vehicles/<VEHICLE_ID>/receipts",
-  {
-    headers: {
-      Authorization: "Bearer <YOUR_TOKEN>",
-    },
-  }
-);
-```
-
----
-
-## `GET https://tangro-demo-api.vercel.app/api/reset`
-
-Reset the database. Delete all the receipts and re-add with the initial ones.
-
-### Request Headers
-
-| Name          | Value                 |
-| ------------- | --------------------- |
-| Authorization | `Bearer <YOUR_TOKEN>` |
-
-### Response Body
-
-Status Codes:
-
-- `401` - the Authorization Token is either missing or faulty.
-- `200` - The app has successfully been reset
-
-### Example code
-
-```bash
-curl https://tangro-demo-api.vercel.app/api/reset -H "Authorization: Bearer <YOUR_TOKEN>"
-```
-
-
-
+To learn React, check out the [React documentation](https://reactjs.org/).
